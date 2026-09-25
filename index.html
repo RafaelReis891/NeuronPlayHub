@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A1_PRANCHA — Prancha do Mar · Documentação Técnica</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.8/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1319;
+    --surface: #151a22;
+    --surface-2: #1d2430;
+    --border: #2e3949;
+    --text: #dde5f0;
+    --text-dim: #8fa6c6;
+    --text-muted: #5d6875;
+    --accent-pink: #d55181;
+    --accent-amber: #c98500;
+    --accent-blue: #4a9eff;
+    --accent-green: #4ade80;
+    --accent-purple: #a78bfa;
+    --accent-orange: #f59e0b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  header {
+    background: linear-gradient(135deg, #1a1f2e 0%, #0f1319 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+  }
+
+  header .container { max-width: 1400px; margin: 0 auto; }
+
+  header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-pink), var(--accent-amber));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+
+  header .subtitle { color: var(--text-dim); font-size: 1.05rem; margin-bottom: 1rem; }
+
+  header .meta {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  header .meta span { display: inline-flex; align-items: center; gap: 0.4rem; }
+  header .meta strong { color: var(--text-dim); }
+
+  nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    position: sticky;
+    top: 140px;
+    z-index: 99;
+    overflow-x: auto;
+  }
+
+  nav .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 0.9rem 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  nav a:hover { color: var(--text); border-bottom-color: var(--accent-pink); }
+
+  main { max-width: 1400px; margin: 0 auto; padding: 3rem 2rem; }
+
+  section { margin-bottom: 4rem; scroll-margin-top: 180px; }
+
+  section h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  section h2 .icon { font-size: 1.5rem; }
+  section h3 { font-size: 1.2rem; color: var(--accent-pink); margin: 2rem 0 1rem; font-weight: 600; }
+  section h4 { font-size: 1rem; color: var(--accent-amber); margin: 1.5rem 0 0.75rem; font-weight: 600; }
+
+  p { margin-bottom: 1rem; color: var(--text); }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: all 0.2s;
+  }
+
+  .card:hover { border-color: var(--accent-pink); transform: translateY(-2px); }
+  .card .card-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .card h4 { color: var(--text); margin: 0 0 0.5rem; font-size: 1.05rem; }
+  .card p { color: var(--text-dim); font-size: 0.9rem; margin: 0; }
+
+  .rule-card {
+    background: var(--surface);
+    border-left: 4px solid var(--accent-green);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .rule-card.warn { border-left-color: var(--accent-orange); }
+  .rule-card h4 { margin: 0 0 0.5rem; color: var(--text); }
+  .rule-card p { margin: 0; color: var(--text-dim); font-size: 0.95rem; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: var(--surface);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  thead { background: var(--surface-2); }
+
+  th {
+    text-align: left;
+    padding: 0.9rem 1rem;
+    color: var(--text-dim);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.92rem;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover { background: var(--surface-2); }
+  td code { background: var(--bg); padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.85rem; color: var(--accent-pink); }
+
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  code { font-family: 'SF Mono', 'Monaco', 'Consolas', monospace; color: var(--text); }
+  p code, li code { background: var(--surface-2); padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.88rem; color: var(--accent-pink); }
+
+  .flow-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+  }
+
+  .flow-container .mermaid { display: flex; justify-content: center; }
+
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .badge.pink { background: rgba(213, 81, 129, 0.2); color: var(--accent-pink); }
+  .badge.amber { background: rgba(201, 133, 0, 0.2); color: var(--accent-amber); }
+  .badge.blue { background: rgba(74, 158, 255, 0.2); color: var(--accent-blue); }
+  .badge.green { background: rgba(74, 222, 128, 0.2); color: var(--accent-green); }
+  .badge.purple { background: rgba(167, 139, 250, 0.2); color: var(--accent-purple); }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  .stat-box .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-pink), var(--accent-amber));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-box .stat-label {
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  ul, ol { margin: 1rem 0 1rem 1.5rem; color: var(--text); }
+  li { margin-bottom: 0.5rem; }
+
+  .arch-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .arch-box h4 { color: var(--accent-blue); margin: 0 0 0.75rem; font-size: 1rem; }
+  .arch-box code { display: block; background: var(--bg); padding: 0.75rem; border-radius: 4px; font-size: 0.85rem; color: var(--text-dim); white-space: pre; overflow-x: auto; }
+
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 4rem;
+  }
+
+  .highlight {
+    background: linear-gradient(135deg, rgba(213, 81, 129, 0.1), rgba(201, 133, 0, 0.1));
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .highlight h4 { color: var(--accent-pink); margin: 0 0 0.75rem; }
+
+  .level-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin: 0.75rem 0;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 1.25rem;
+    align-items: center;
+  }
+
+  .level-card .level-badge {
+    background: linear-gradient(135deg, var(--accent-pink), var(--accent-amber));
+    color: white;
+    font-weight: 700;
+    font-size: 1.5rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .level-card .level-info h4 { color: var(--text); margin: 0 0 0.5rem; }
+  .level-card .level-info p { color: var(--text-dim); font-size: 0.9rem; margin: 0; }
+  .level-card .level-info ul { margin: 0.5rem 0 0 1rem; font-size: 0.88rem; color: var(--text-dim); }
+
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6rem; }
+    section h2 { font-size: 1.4rem; }
+    main { padding: 2rem 1rem; }
+    nav { top: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>A1_PRANCHA - Prancha do Mar</h1>
+    <p class="subtitle">Minigame de Comunicacao Aumentativa e Alternativa (CAA) - Projeto NeuronPlay</p>
+    <div class="meta">
+      <span><strong>Area:</strong> A1 - Comunicacao</span>
+      <span><strong>Minigame ID:</strong> <code>A1_PRANCHA</code></span>
+      <span><strong>Plataforma:</strong> Unity</span>
+      <span><strong>Versao:</strong> 1.0.0 (MVP)</span>
+      <span><strong>Atualizacao:</strong> Setembro 2026</span>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="container">
+    <a href="#visao">Visao Geral</a>
+    <a href="#objetivo">Objetivo</a>
+    <a href="#regras">Regras</a>
+    <a href="#arquitetura">Arquitetura</a>
+    <a href="#fluxo">Fluxo</a>
+    <a href="#autonomia">Autonomia</a>
+    <a href="#recompensas">Recompensas</a>
+    <a href="#telemetria">Telemetria</a>
+    <a href="#feedback">Feedback Visual</a>
+    <a href="#scripts">Scripts</a>
+    <a href="#config">Configuracao</a>
+    <a href="#cena">Cena Unity</a>
+  </div>
+</nav>
+
+<main>
+
+  <section id="visao">
+    <h2><span class="icon">🌟</span> Visao Geral</h2>
+    <p><strong>Prancha do Mar</strong> e um minigame de Comunicacao Aumentativa e Alternativa (CAA) baseado em pictogramas. A crianca monta pequenas frases selecionando de 1 a 3 simbolos, ouve o audio de cada um e, ao tocar em <strong>FALAR</strong>, escuta a sequencia completa sendo vocalizada.</p>
+    <p>O minigame <strong>nao e um comunicador AAC completo</strong> - e uma atividade estruturada com trials, recompensas e telemetria, focada em reforcar a comunicacao funcional da crianca.</p>
+
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-value">19</div><div class="stat-label">Scripts Totais</div></div>
+      <div class="stat-box"><div class="stat-value">40</div><div class="stat-label">Pictogramas (MVP)</div></div>
+      <div class="stat-box"><div class="stat-value">5</div><div class="stat-label">Niveis de Autonomia</div></div>
+      <div class="stat-box"><div class="stat-value">4</div><div class="stat-label">Trials Padrao</div></div>
+    </div>
+
+    <h3>O que a crianca faz:</h3>
+    <ol>
+      <li>Visualiza um conjunto de pictogramas (grid dinamico)</li>
+      <li>Seleciona de 1 a 3 simbolos</li>
+      <li>Monta uma pequena frase na tira</li>
+      <li>Ouve o audio de cada simbolo selecionado</li>
+      <li>Toca em <strong>FALAR</strong></li>
+      <li>Ouve a sequencia completa vocalizada</li>
+      <li>Recebe reforco visual e de recompensas (NeuronCoins + XP)</li>
+      <li>Repete o processo por um numero configuravel de trials (padrao: 4)</li>
+    </ol>
+  </section>
+
+  <section id="objetivo">
+    <h2><span class="icon">🎯</span> Objetivo Pedagogico</h2>
+    <p>A atividade trabalha competencias fundamentais da comunicacao aumentativa:</p>
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">💬</div><h4>Comunicacao Funcional</h4><p>Atraves de pictogramas, a crianca expressa necessidades e desejos de forma concreta.</p></div>
+      <div class="card"><div class="card-icon">🔗</div><h4>Construcao de Frases</h4><p>Montagem de frases simples (sujeito + verbo + objeto) seguindo estrutura linguistica.</p></div>
+      <div class="card"><div class="card-icon">💧</div><h4>Expressao de Necessidades</h4><p>Vocabulario funcional: agua, comida, banheiro, ajuda, sentimentos, etc.</p></div>
+      <div class="card"><div class="card-icon">⭐</div><h4>Reforco Positivo</h4><p>Toda tentativa de comunicacao e validada e reforcada com recompensas e feedback visual.</p></div>
+      <div class="card"><div class="card-icon">📈</div><h4>Autonomia Progressiva</h4><p>5 niveis de suporte (N1-N5) que reduzem gradualmente a ajuda visual.</p></div>
+    </div>
+  </section>
+
+  <section id="regras">
+    <h2><span class="icon">⚖️</span> Regras Fundamentais</h2>
+    <p>O minigame segue uma logica pedagogica especifica que <strong>nunca deve ser violada</strong>:</p>
+    <div class="highlight">
+      <h4>Principio Central</h4>
+      <p>O minigame segue a logica:</p>
+      <pre><code>GAMEPLAY → COMUNICACAO → REFORCO</code></pre>
+      <p><strong>NUNCA:</strong></p>
+      <pre><code>GAMEPLAY → ACERTO/ERRO → PUNICAO</code></pre>
+    </div>
+    <div class="rule-card"><h4>1. Sem Punicao</h4><ul><li>Nunca remover NeuronCoins</li><li>Nunca mostrar "ERRADO", "FALHOU" ou "X vermelho"</li><li>Nunca bloquear a atividade por escolha "incorreta"</li></ul></div>
+    <div class="rule-card"><h4>2. Daily Target e Bonus, Nao Obrigacao</h4><ul><li>O <code>daily_target</code> e escolhido pelo adulto/terapeuta</li><li>Se a crianca alcanca o alvo → bonus de +4 NeuronCoins</li><li>Se a crianca NAO alcanca → recompensa normal, sem penalidade</li></ul></div>
+    <div class="rule-card"><h4>3. Comunicacao Sempre Reforcada</h4><ul><li>Toda frase vocalizada gera recompensa</li><li>Toda tentativa e valida</li><li>A crianca pode parar a qualquer momento ("Vamos parar aqui")</li></ul></div>
+  </section>
+
+  <section id="arquitetura">
+    <h2><span class="icon">🏗️</span> Arquitetura do Sistema</h2>
+    <p>O minigame e composto por <strong>19 scripts modulares</strong>, cada um com responsabilidade unica, incluindo o sistema de feedback visual desacoplado.</p>
+
+    <div class="flow-container">
+      <div class="mermaid">
+graph TD
+    PC["PranchaController<br/>Orquestrador Principal"]
+    GM["PranchaGridManager<br/>Grid Dinamico"]
+    PS["PhraseStrip<br/>Tira de Frase"]
+    VM["VoiceManager<br/>Audio/TTS"]
+    TM["PranchaTrialManager<br/>Controle de Trials"]
+    DTM["DailyTargetManager<br/>Alvo do Dia"]
+    THM["TargetHighlightManager<br/>Destaque N1-N5"]
+    RM["PranchaRewardManager<br/>Recompensas"]
+    TEL["PranchaTelemetry<br/>Telemetria"]
+    NAV["NaviController<br/>Mascote"]
+    FB["UIFeedbackManager<br/>Feedback Visual"]
+    CFG["PranchaConfig"]
+    SYM["SymbolData"]
+    SC["SymbolCard"]
+    SLOT["PhraseSlot"]
+    NP["NeuronPlay<br/>Sistema Principal"]
+
+    NP -->|Initialize config| PC
+    CFG --> PC
+    SYM --> CFG
+    PC --> GM
+    PC --> PS
+    PC --> VM
+    PC --> TM
+    PC --> DTM
+    PC --> THM
+    PC --> RM
+    PC --> TEL
+    PC --> NAV
+    PC --> FB
+    GM --> SC
+    PS --> SLOT
+    FB --> SC
+    FB --> PS
+    RM -->|rewards| NP
+    TEL -->|telemetry| NP
+
+    class PC controller
+    class GM,PS,VM,TM,DTM,THM,RM,TEL,NAV,FB manager
+    class CFG,SYM data
+    class SC,SLOT ui
+    class NP external
+
+    classDef controller fill:#d55181,stroke:#fff,stroke-width:3px,color:#fff
+    classDef manager fill:#4a9eff,stroke:#2e3949,stroke-width:2px,color:#fff
+    classDef data fill:#c98500,stroke:#2e3949,stroke-width:2px,color:#fff
+    classDef ui fill:#4ade80,stroke:#2e3949,stroke-width:2px,color:#fff
+    classDef external fill:#a78bfa,stroke:#2e3949,stroke-width:2px,color:#fff,stroke-dasharray:5 5
+      </div>
+    </div>
+
+    <h3>Responsabilidades dos Componentes</h3>
+    <table>
+      <thead><tr><th>Componente</th><th>Responsabilidade</th><th>Tipo</th></tr></thead>
+      <tbody>
+        <tr><td><code>PranchaController</code></td><td>Orquestra todos os sistemas, controla estados, expoe API publica</td><td><span class="badge pink">Controller</span></td></tr>
+        <tr><td><code>PranchaGridManager</code></td><td>Gera e limpa o grid de cartoes dinamicamente</td><td><span class="badge blue">Manager</span></td></tr>
+        <tr><td><code>PhraseStrip</code></td><td>Mantem a tira de frase (1-3 slots), impoe limite</td><td><span class="badge blue">Manager</span></td></tr>
+        <tr><td><code>VoiceManager</code></td><td>Reproduz audios individuais e vocaliza frases</td><td><span class="badge blue">Manager</span></td></tr>
+        <tr><td><code>PranchaTrialManager</code></td><td>Controla fluxo de 4 trials, encerramento antecipado</td><td><span class="badge blue">Manager</span></td></tr>
+        <tr><td><code>DailyTargetManager</code></td><td>Verifica se o alvo do dia foi alcancado (bonus)</td><td><span class="badge blue">Manager</span></td></tr>
+        <tr><td><code>TargetHighlightManager</code></td><td>Controla destaque visual conforme autonomia N1-N5</td><td><span class="badge blue">Manager</span></td></tr>
+        <tr><td><code>PranchaRewardManager</code></td><td>Concede NeuronCoins e XP, nunca remove</td><td><span class="badge blue">Manager</span></td></tr>
+        <tr><td><code>PranchaTelemetry</code></td><td>Registra eventos e dados da sessao em JSON</td><td><span class="badge blue">Manager</span></td></tr>
+        <tr><td><code>NaviController</code></td><td>Mascote visual (Idle, Pointing, Celebrating)</td><td><span class="badge blue">Manager</span></td></tr>
+        <tr><td><code>UIFeedbackManager</code></td><td>Centraliza e orquestra todos os feedbacks visuais</td><td><span class="badge blue">Manager</span></td></tr>
+        <tr><td><code>PranchaConfig</code></td><td>Configuracao da atividade (ScriptableObject)</td><td><span class="badge amber">Data</span></td></tr>
+        <tr><td><code>SymbolData</code></td><td>Dados de cada pictograma (ScriptableObject)</td><td><span class="badge amber">Data</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="fluxo">
+    <h2><span class="icon">🔄</span> Fluxo de Funcionamento</h2>
+    <p>O fluxo completo do minigame, desde a inicializacao ate a conclusao.</p>
+
+    <div class="flow-container">
+      <div class="mermaid">
+flowchart TD
+    START(["Inicio da Atividade"])
+    INIT["Initialize config<br/>StartActivity"]
+    SETUP["Setup Grid, Strip<br/>Managers, Navi, Feedback"]
+    TRIAL_START["Trial N/4 Iniciado"]
+    WAIT["WaitingForSelection<br/>Aguardando toque"]
+    SELECT["Toca em SymbolCard"]
+    ADD_STRIP["Adiciona a PhraseStrip<br/>Feedback visual + Audio"]
+    SPEAK["Toca em FALAR"]
+    VOCALIZE["Vocaliza frase<br/>Feedback de loading<br/>Verifica Daily Target"]
+    CHECK_TARGET{"Alvo alcancado?"}
+    BONUS["+4 NC bonus<br/>Celebracao visual"]
+    BASE["+2-4 NC base"]
+    REWARD["Concede Recompensa<br/>Registra Telemetria"]
+    CHECK_TRIALS{"Trial < 4?"}
+    NEXT_TRIAL["Proximo Trial"]
+    COMPLETE["CompleteActivity<br/>Recompensa Final<br/>Telemetria JSON"]
+    STOP["Vamos parar aqui"]
+    PAUSE["Pausa<br/>Overlay visual"]
+    RESUME["Resume<br/>Remove overlay"]
+
+    START --> INIT
+    INIT --> SETUP
+    SETUP --> TRIAL_START
+    TRIAL_START --> WAIT
+    WAIT --> SELECT
+    SELECT --> ADD_STRIP
+    ADD_STRIP --> WAIT
+    WAIT --> SPEAK
+    SPEAK --> VOCALIZE
+    VOCALIZE --> CHECK_TARGET
+    CHECK_TARGET -->|Sim| BONUS
+    CHECK_TARGET -->|Nao| BASE
+    BONUS --> REWARD
+    BASE --> REWARD
+    REWARD --> CHECK_TRIALS
+    CHECK_TRIALS -->|Sim| NEXT_TRIAL
+    CHECK_TRIALS -->|Nao| COMPLETE
+    NEXT_TRIAL --> TRIAL_START
+    WAIT -.->|Pausa| PAUSE
+    PAUSE -.->|Resume| RESUME
+    RESUME -.-> WAIT
+    WAIT -.->|Encerrar| STOP
+    STOP --> COMPLETE
+
+    classDef startNode fill:#4ade80,stroke:#2e3949,stroke-width:2px,color:#0f1319
+    classDef processNode fill:#4a9eff,stroke:#2e3949,stroke-width:2px,color:#fff
+    classDef decisionNode fill:#c98500,stroke:#2e3949,stroke-width:2px,color:#fff
+    classDef actionNode fill:#d55181,stroke:#2e3949,stroke-width:2px,color:#fff
+    classDef endNode fill:#a78bfa,stroke:#2e3949,stroke-width:2px,color:#fff
+
+    class START startNode
+    class INIT,SETUP,TRIAL_START,WAIT,ADD_STRIP,VOCALIZE,BONUS,BASE,REWARD,NEXT_TRIAL,RESUME processNode
+    class SELECT,SPEAK,STOP,PAUSE actionNode
+    class CHECK_TARGET,CHECK_TRIALS decisionNode
+    class COMPLETE endNode
+      </div>
+    </div>
+
+    <h3>Estados do Sistema</h3>
+    <table>
+      <thead><tr><th>Estado</th><th>Descricao</th><th>Acoes Permitidas</th></tr></thead>
+      <tbody>
+        <tr><td><code>Loading</code></td><td>Carregando configuracao</td><td>Nenhuma</td></tr>
+        <tr><td><code>Intro</code></td><td>Tela de introducao com Navi</td><td>Iniciar atividade</td></tr>
+        <tr><td><code>Playing</code></td><td>Atividade em andamento</td><td>Selecionar simbolos, Falar, Pausar</td></tr>
+        <tr><td><code>Speaking</code></td><td>Vocalizando frase</td><td>Pausar</td></tr>
+        <tr><td><code>TrialResult</code></td><td>Mostrando resultado do trial</td><td>Continuar</td></tr>
+        <tr><td><code>Paused</code></td><td>Atividade pausada (overlay ativo)</td><td>Retomar</td></tr>
+        <tr><td><code>Completed</code></td><td>Atividade concluida</td><td>Retornar ao NeuronPlay</td></tr>
+        <tr><td><code>Stopped</code></td><td>Encerrada antecipadamente</td><td>Retornar ao NeuronPlay</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="autonomia">
+    <h2><span class="icon">📊</span> Niveis de Autonomia (N1-N5)</h2>
+    <p>O sistema oferece 5 niveis de suporte que reduzem gradualmente a ajuda visual, permitindo que a crianca evolua de forma progressiva.</p>
+
+    <div class="level-card">
+      <div class="level-badge">N1</div>
+      <div class="level-info">
+        <h4>Maximo Suporte</h4>
+        <p>Ideal para criancas em fase inicial de comunicacao aumentativa.</p>
+        <ul><li><strong>4 cartoes</strong> visiveis no grid</li><li><strong>1 slot</strong> na tira de frase</li><li><strong>Alvo sempre destacado</strong> (amarelo)</li><li><strong>Audio sempre ativo</strong> na selecao</li><li><strong>Duracao:</strong> 60 segundos</li></ul>
+      </div>
+    </div>
+    <div class="level-card">
+      <div class="level-badge">N2</div>
+      <div class="level-info">
+        <h4>Suporte Alto</h4>
+        <p>Transicao para frases de 2 simbolos com suporte frequente.</p>
+        <ul><li><strong>4-6 cartoes</strong> visiveis</li><li><strong>1-2 slots</strong> na tira</li><li><strong>Alvo destacado frequentemente</strong> (2 de 3 trials)</li><li><strong>Audio sempre ativo</strong></li><li><strong>Duracao:</strong> 70 segundos</li></ul>
+      </div>
+    </div>
+    <div class="level-card">
+      <div class="level-badge">N3</div>
+      <div class="level-info">
+        <h4>Suporte Moderado</h4>
+        <p>Crianca ja compreende a mecanica, precisa de ajuda inicial.</p>
+        <ul><li><strong>6 cartoes</strong> visiveis</li><li><strong>2 slots</strong> na tira</li><li><strong>Alvo destacado apenas no 1o trial</strong></li><li><strong>Audio sempre ativo</strong></li><li><strong>Duracao:</strong> 90 segundos</li></ul>
+      </div>
+    </div>
+    <div class="level-card">
+      <div class="level-badge">N4</div>
+      <div class="level-info">
+        <h4>Suporte Baixo</h4>
+        <p>Crianca independente, apenas lembretes ocasionais.</p>
+        <ul><li><strong>6-9 cartoes</strong> visiveis</li><li><strong>2-3 slots</strong> na tira</li><li><strong>Alvo destacado raramente</strong> (1 de 4 trials)</li><li><strong>Audio opcional</strong></li><li><strong>Duracao:</strong> 100 segundos</li></ul>
+      </div>
+    </div>
+    <div class="level-card">
+      <div class="level-badge">N5</div>
+      <div class="level-info">
+        <h4>Autonomia Total</h4>
+        <p>Crianca completamente independente na comunicacao.</p>
+        <ul><li><strong>9 cartoes</strong> visiveis</li><li><strong>3 slots</strong> na tira</li><li><strong>Sem destaque do alvo</strong></li><li><strong>Audio opcional</strong></li><li><strong>Duracao:</strong> 120 segundos</li></ul>
+      </div>
+    </div>
+
+    <h3>Tabela Comparativa</h3>
+    <table>
+      <thead><tr><th>Parametro</th><th>N1</th><th>N2</th><th>N3</th><th>N4</th><th>N5</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Cartoes visiveis</strong></td><td>4</td><td>4-6</td><td>6</td><td>6-9</td><td>9</td></tr>
+        <tr><td><strong>Slots na tira</strong></td><td>1</td><td>1-2</td><td>2</td><td>2-3</td><td>3</td></tr>
+        <tr><td><strong>Destaque do alvo</strong></td><td>Sempre</td><td>Frequente</td><td>Inicial</td><td>Raro</td><td>Nunca</td></tr>
+        <tr><td><strong>Audio na selecao</strong></td><td>Sempre</td><td>Sempre</td><td>Sempre</td><td>Opcional</td><td>Opcional</td></tr>
+        <tr><td><strong>Duracao (s)</strong></td><td>60</td><td>70</td><td>90</td><td>100</td><td>120</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="recompensas">
+    <h2><span class="icon">💰</span> Sistema de Recompensas</h2>
+    <p>O sistema de recompensas e <strong>sempre positivo</strong> - nunca remove moedas ou aplica penalidades.</p>
+
+    <h3>Recompensas por Trial</h3>
+    <table>
+      <thead><tr><th>Evento</th><th>Recompensa</th><th>Condicao</th></tr></thead>
+      <tbody>
+        <tr><td>Trial completado</td><td><span class="badge green">+2 a +4 NeuronCoins</span></td><td>Aleatorio entre 2-4</td></tr>
+        <tr><td>Alvo do dia alcancado</td><td><span class="badge green">+4 NeuronCoins</span></td><td>Bonus adicional</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Recompensas de Atividade</h3>
+    <table>
+      <thead><tr><th>Evento</th><th>Recompensa</th><th>Frequencia</th></tr></thead>
+      <tbody>
+        <tr><td>Atividade concluida</td><td><span class="badge green">+10 NeuronCoins + 8 XP</span></td><td>Sempre</td></tr>
+        <tr><td>Primeira vez</td><td><span class="badge purple">+10 NeuronCoins + badge "Primeira prancha"</span></td><td>Uma vez</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Exemplo de Calculo</h3>
+    <div class="arch-box">
+      <h4>Cenario: Alvo = AGUA</h4>
+      <code>Trial 1: EU → QUERO → AGUA (alvo alcancado)
+  Base: +3 NC
+  Bonus alvo: +4 NC
+  Total: +7 NC
+
+Trial 2: EU → QUERO → BRINCAR (alvo nao alcancado)
+  Base: +2 NC
+  Bonus alvo: 0 NC
+  Total: +2 NC
+
+Atividade concluida:
+  Conclusao: +10 NC + 8 XP
+  Primeira vez: +10 NC + badge
+
+Total da sessao: +29 NC + 8 XP + badge</code>
+    </div>
+
+    <div class="rule-card warn">
+      <h4>Regra Importante</h4>
+      <p>O sistema <strong>nunca remove NeuronCoins</strong>. Mesmo que a crianca nao alcance o alvo do dia, ela recebe a recompensa base do trial. O alvo e apenas um bonus adicional.</p>
+    </div>
+  </section>
+
+  <section id="telemetria">
+    <h2><span class="icon">📈</span> Telemetria</h2>
+    <p>O sistema registra dados completos de cada trial e da sessao, permitindo analise clinica e acompanhamento do progresso.</p>
+
+    <h3>Dados por Trial</h3>
+    <div class="arch-box">
+      <h4>Estrutura JSON</h4>
+      <code>{
+  "symbol_ids": ["eu", "quero", "agua"],
+  "order_ok": true,
+  "latency_ms_first_touch": 568,
+  "independent": true,
+  "tts_played": false,
+  "voice_source": "audio_clip",
+  "matched_daily_target": true
+}</code>
+    </div>
+
+    <table>
+      <thead><tr><th>Campo</th><th>Tipo</th><th>Descricao</th></tr></thead>
+      <tbody>
+        <tr><td><code>symbol_ids</code></td><td>string[]</td><td>Lista de IDs dos simbolos selecionados</td></tr>
+        <tr><td><code>order_ok</code></td><td>boolean</td><td>Ordem correta (sempre true no MVP)</td></tr>
+        <tr><td><code>latency_ms_first_touch</code></td><td>int</td><td>Latencia do primeiro toque (ms)</td></tr>
+        <tr><td><code>independent</code></td><td>boolean</td><td>Selecao independente</td></tr>
+        <tr><td><code>tts_played</code></td><td>boolean</td><td>Se usou TTS</td></tr>
+        <tr><td><code>voice_source</code></td><td>string</td><td>"audio_clip" ou "tts"</td></tr>
+        <tr><td><code>matched_daily_target</code></td><td>boolean</td><td>Se alcancou o alvo</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Dados da Sessao</h3>
+    <div class="arch-box">
+      <h4>Estrutura JSON</h4>
+      <code>{
+  "session_id": "uuid",
+  "child_id": "id",
+  "minigame_id": "A1_PRANCHA",
+  "area_id": "A1",
+  "autonomy_level": 1,
+  "started_at": "2026-09-25T12:35:12.8016274-03:00",
+  "ended_at": "2026-09-25T12:35:21.8902890-03:00",
+  "n_trials": 4,
+  "n_unique_symbols": 6,
+  "duration_s": 108.5,
+  "completed": true
+}</code>
+    </div>
+
+    <h3>Eventos Registrados</h3>
+    <table>
+      <thead><tr><th>Evento</th><th>Quando Ocorre</th><th>Dados</th></tr></thead>
+      <tbody>
+        <tr><td><code>symbol_selected</code></td><td>Quando um simbolo e tocado</td><td><code>symbol_id</code>, <code>timestamp</code></td></tr>
+        <tr><td><code>phrase_spoken</code></td><td>Quando FALAR e pressionado</td><td><code>symbol_ids[]</code>, <code>voice_source</code></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="feedback">
+    <h2><span class="icon">✨</span> Feedback Visual (UI Feedback)</h2>
+    <p>O sistema utiliza feedbacks visuais minimalistas, <strong>sem texto</strong>, para guiar a crianca sem sobrecarregar cognitivamente e mantendo a regra de nunca punir. O <code>UIFeedbackManager</code> centraliza essas chamadas.</p>
+
+    <div class="flow-container">
+      <div class="mermaid">
+graph TD
+    PC["PranchaController"]
+    FB["UIFeedbackManager"]
+    SC["SymbolCardFeedback<br/>Scale + Glow"]
+    PS["PhraseStripFeedback<br/>Flash + Pulse"]
+    PO["PauseOverlay<br/>Fade In/Out"]
+    CE["CelebrationEffect<br/>Particulas"]
+
+    PC -->|OnSymbolSelected| FB
+    PC -->|OnSymbolAddedToStrip| FB
+    PC -->|OnStripFull| FB
+    PC -->|OnSpeakButtonPressed| FB
+    PC -->|OnTargetMatched| FB
+    PC -->|OnTrialCompleted| FB
+    PC -->|OnActivityPaused| FB
+    PC -->|OnActivityResumed| FB
+    PC -->|OnActivityCompleted| FB
+
+    FB --> SC
+    FB --> PS
+    FB --> PO
+    FB --> CE
+
+    classDef ctrl fill:#d55181,stroke:#fff,stroke-width:2px,color:#fff
+    classDef mgr fill:#4a9eff,stroke:#2e3949,stroke-width:2px,color:#fff
+    classDef fx fill:#4ade80,stroke:#2e3949,stroke-width:2px,color:#fff
+
+    class PC ctrl
+    class FB mgr
+    class SC,PS,PO,CE fx
+      </div>
+    </div>
+
+    <h3>Tipos de Feedback</h3>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">👆</div>
+        <h4>Selecao de Simbolo</h4>
+        <p>O cartao faz um <em>scale up/down</em> rapido (0.15s) para confirmar o toque.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">➕</div>
+        <h4>Adicao a Tira</h4>
+        <p>O slot correspondente pisca em verde suave (0.25s) ao ser preenchido.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚠️</div>
+        <h4>Tira Cheia (Neutro)</h4>
+        <p>Todos os slots pulsam em âmbar (0.4s). <strong>Nao e um erro</strong>, apenas um indicador visual de limite.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗣️</div>
+        <h4>Botao Falar</h4>
+        <p>Os slots pulsam em azul enquanto a frase e vocalizada, indicando processamento.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎉</div>
+        <h4>Celebracao</h4>
+        <p>Explosao de particulas coloridas e mudanca de estado da Navi ao alcancar o alvo ou completar a atividade.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⏸️</div>
+        <h4>Pausa</h4>
+        <p>Overlay escuro semi-transparente com <em>fade in</em> (0.3s) bloqueia interacoes até o <em>resume</em>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="scripts">
+    <h2><span class="icon">📜</span> Scripts e Responsabilidades</h2>
+    <p>Detalhamento de cada script do sistema.</p>
+
+    <h3>1. PranchaController.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Orquestrador principal do minigame. Controla o fluxo de estados, inicializa todos os gerenciadores e expoe API publica para integracao externa.</p>
+      <h4>API Publica</h4>
+      <code>Initialize(PranchaConfig config)
+StartActivity()
+SelectSymbol(SymbolData symbol)
+SpeakPhrase()
+PauseActivity()
+ResumeActivity()
+StopEarly()
+CompleteActivity()
+GetResult()</code>
+    </div>
+
+    <h3>2. SymbolData.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Dados de um unico pictograma (ScriptableObject).</p>
+      <h4>Campos</h4>
+      <code>public string id;           // ID estavel (ex: "agua")
+public string label;          // Rotulo em portugues (ex: "AGUA")
+public Sprite icon;           // Pictograma visual
+public AudioClip audioClip;   // Audio da palavra (.m4a, max 3s)</code>
+    </div>
+
+    <h3>3. PranchaConfig.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Configuracao completa da atividade (ScriptableObject).</p>
+      <h4>Campos</h4>
+      <code>public List&lt;SymbolData&gt; symbols;              // Conjunto de simbolos (max 12)
+public SymbolData dailyTarget;                    // Alvo do dia (opcional)
+public int trialsTarget = 4;                      // Numero de trials
+public int autonomyLevel = 1;                     // Nivel de autonomia (1-5)
+public List&lt;AutonomySettings&gt; autonomySettingsTable; // Tabela N1-N5</code>
+    </div>
+
+    <h3>4. VoiceManager.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Gerenciador de audio. Reproduz audios individuais e vocaliza frases completas.</p>
+      <h4>Fluxo de Prioridade</h4>
+      <code>Simbolo tem AudioClip?
+    ├─ SIM → Reproduz audio gravado
+    └─ NAO → Usa TTS (stub, Portugues-Brasil)</code>
+    </div>
+
+    <h3>5. PranchaTrialManager.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Controle do fluxo de trials. Gerencia 4 trials (configuravel), controla estados e suporta encerramento antecipado.</p>
+      <h4>Estados do Trial</h4>
+      <code>WaitingForSelection → SelectingSymbols → Speaking → TrialCompleted</code>
+    </div>
+
+    <h3>6. DailyTargetManager.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Verifica se o alvo do dia foi alcancado. <strong>NUNCA falha o trial</strong> - apenas informa match para bonus.</p>
+    </div>
+
+    <h3>7. TargetHighlightManager.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Controla o destaque visual do alvo conforme autonomia.</p>
+      <h4>Padroes</h4>
+      <code>N1 (Always):    Alvo sempre destacado
+N2 (Frequent):  Alvo destacado em 2 de 3 trials
+N3 (Initial):   Alvo destacado apenas no 1o trial
+N4 (Rare):      Alvo destacado em 1 de 4 trials
+N5 (Never):     Alvo nunca destacado</code>
+    </div>
+
+    <h3>8. PranchaRewardManager.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Sistema de recompensas. Concede NeuronCoins e XP. <strong>Nunca remove moedas.</strong></p>
+    </div>
+
+    <h3>9. PranchaTelemetry.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Registro de eventos e dados da sessao em JSON. Exporta dados para integracao com backend.</p>
+    </div>
+
+    <h3>10. NaviController.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Mascote visual (Navi). Reage a eventos, mas <strong>NAO controla logica</strong>.</p>
+      <h4>Estados</h4>
+      <code>Idle          → Estado padrao
+Pointing      → Apontando para o alvo (quando destacado)
+Celebrating   → Celebracao (alvo alcancado ou atividade completa)</code>
+    </div>
+
+    <h3>11. UIFeedbackManager.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Centralizador que recebe chamadas diretas do Controller e orquestra os componentes visuais de feedback.</p>
+    </div>
+
+    <h3>12. SymbolCardFeedback.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Aplica animacao de <em>scale up/down</em> rapido no cartao quando selecionado.</p>
+    </div>
+
+    <h3>13. PhraseStripFeedback.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Gerencia animacoes na tira: flash verde ao preencher slot, pulso âmbar quando cheia, e pulso azul durante a fala.</p>
+    </div>
+
+    <h3>14. PauseOverlay.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Controla o fade in/out de um overlay escuro que bloqueia a UI durante a pausa.</p>
+    </div>
+
+    <h3>15. CelebrationEffect.cs</h3>
+    <div class="arch-box">
+      <h4>Responsabilidade</h4>
+      <p>Gera particulas coloridas simples (circulos com Rigidbody2D) para celebrar conquistas sem usar assets pesados.</p>
+    </div>
+  </section>
+
+  <section id="config">
+    <h2><span class="icon">⚙️</span> Configuracao dos ScriptableObjects</h2>
+    <p>Como configurar os assets no Unity Editor.</p>
+
+    <h3>Criando um Novo Simbolo (SymbolData)</h3>
+    <ol>
+      <li>No Unity, va em <code>Assets/A1_PranchadoMar/ScriptableObjects/Symbols/</code></li>
+      <li>Clique com botao direito → <strong>Create</strong> → <strong>NeuronPlay</strong> → <strong>A1</strong> → <strong>Symbol</strong></li>
+      <li>Nomeie o arquivo (ex: <code>Sym_Agua</code>)</li>
+      <li>No Inspector, preencha:
+        <ul>
+          <li><strong>Id:</strong> <code>agua</code> (minusculas, sem espacos)</li>
+          <li><strong>Label:</strong> <code>AGUA</code> (em portugues)</li>
+          <li><strong>Icon:</strong> Arraste o pictograma</li>
+          <li><strong>Audio Clip:</strong> Arraste o arquivo <code>.m4a</code> (max 3 segundos)</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>Configurando a Atividade (PranchaConfig)</h3>
+    <ol>
+      <li>Va em <code>Assets/A1_PranchadoMar/ScriptableObjects/Config/</code></li>
+      <li>Crie um <code>PranchaConfig</code> (Create → NeuronPlay → A1 → PranchaConfig)</li>
+      <li>Configure:
+        <ul>
+          <li><strong>Symbols:</strong> Adicione ate 12 simbolos</li>
+          <li><strong>Daily Target:</strong> Escolha o alvo do dia (ou deixe vazio)</li>
+          <li><strong>Trials Target:</strong> 4 (padrao)</li>
+          <li><strong>Autonomy Level:</strong> 1 a 5</li>
+          <li><strong>Autonomy Settings Table:</strong> Configure os 5 niveis (N1-N5)</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>Exemplo de Autonomy Settings Table</h3>
+    <table>
+      <thead><tr><th>Level</th><th>Visible Cards</th><th>Phrase Slots</th><th>Highlight Target</th><th>Audio On Selection</th><th>Target Duration</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>4</td><td>1</td><td>true</td><td>true</td><td>60</td></tr>
+        <tr><td>2</td><td>6</td><td>2</td><td>true</td><td>true</td><td>70</td></tr>
+        <tr><td>3</td><td>6</td><td>2</td><td>true</td><td>true</td><td>90</td></tr>
+        <tr><td>4</td><td>9</td><td>3</td><td>false</td><td>false</td><td>100</td></tr>
+        <tr><td>5</td><td>9</td><td>3</td><td>false</td><td>false</td><td>120</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="cena">
+    <h2><span class="icon">🎬</span> Organizacao da Cena Unity</h2>
+    <p>Estrutura recomendada da hierarquia de GameObjects na cena.</p>
+
+    <div class="arch-box">
+      <h4>Hierarquia Recomendada</h4>
+      <code>A1_PranchadoMar (Scene)
+|
++-- _GameManager                    # GameObject vazio
+|   +-- PranchaController.cs           # Script principal
+|   +-- Config: [PranchaConfig.asset]
+|   +-- Grid Manager: [PranchaGridManager]
+|   +-- Phrase Strip: [PhraseStrip]
+|   +-- Voice Manager: [VoiceManager]
+|   +-- Trial Manager: [PranchaTrialManager]
+|   +-- Daily Target Manager: [DailyTargetManager]
+|   +-- Target Highlight Manager: [TargetHighlightManager]
+|   +-- Reward Manager: [PranchaRewardManager]
+|   +-- Telemetry: [PranchaTelemetry]
+|   +-- Navi: [NaviController]
+|   +-- Feedback Manager: [UIFeedbackManager]
+|
++-- Canvas (UI)
+|   +-- GridContainer                  # Panel com Grid Layout Group
+|   |   +-- [SymbolCards instanciados dinamicamente]
+|   |
+|   +-- PhraseStripContainer           # Panel com Horizontal Layout Group
+|   |   +-- PhraseSlot_1
+|   |   +-- PhraseSlot_2
+|   |   +-- PhraseSlot_3
+|   |
+|   +-- SpeakButton                    # Botao "FALAR" (min 64dp altura)
+|   |   +-- Text: "FALAR"
+|   |
+|   +-- StopButton                     # Botao "Vamos parar aqui"
+|   |   +-- Text: "Vamos parar aqui"
+|   |
+|   +-- PauseButton                    # Botao de pausa
+|   |
+|   +-- NaviContainer                  # Container da mascote
+|       +-- Navi_Idle                  # Visual estado Idle
+|       +-- Navi_Pointing              # Visual estado Pointing
+|       +-- Navi_Celebrating           # Visual estado Celebrating
+|
++-- _UIFeedback                     # GameObject vazio (Feedback Visual)
+|   +-- SymbolCardFeedbackObj          # Script: SymbolCardFeedback
+|   +-- PhraseStripFeedbackObj         # Script: PhraseStripFeedback
+|   +-- PauseOverlayObj                # Script: PauseOverlay + CanvasGroup + Image
+|   +-- CelebrationEffectObj           # Script: CelebrationEffect
+|
++-- _AudioManager                   # (Opcional, se usar AudioSource global)</code>
+    </div>
+
+    <h3>Configuracao dos Layout Groups</h3>
+    <table>
+      <thead><tr><th>Componente</th><th>Configuracao</th></tr></thead>
+      <tbody>
+        <tr><td><strong>GridContainer</strong><br/>(Grid Layout Group)</td><td><ul><li>Cell Size: (150, 150)</li><li>Spacing: (20, 20)</li><li>Constraint: Fixed Column Count = 2 (N1) ou 3 (N5)</li></ul></td></tr>
+        <tr><td><strong>PhraseStripContainer</strong><br/>(Horizontal Layout Group)</td><td><ul><li>Spacing: 10</li><li>Child Alignment: Middle Center</li><li>Child Force Expand: Width = true, Height = true</li></ul></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>A1_PRANCHA - Prancha do Mar</strong> - Projeto NeuronPlay - Rafael Reis</p>
+  <p>Documentacao tecnica - Versao 1.0.0 (MVP) - Setembro 2026</p>
+  <p style="margin-top: 1rem; color: var(--text-muted);">
+    Este minigame segue o principio fundamental: <strong>GAMEPLAY → COMUNICACAO → REFORCO</strong><br/>
+    Nunca: GAMEPLAY → ACERTO/ERRO → PUNICAO
+  </p>
+</footer>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    securityLevel: 'loose',
+    flowchart: {
+      useMaxWidth: true,
+      htmlLabels: true,
+      curve: 'basis'
+    }
+  });
+</script>
+
+</body>
+</html>
